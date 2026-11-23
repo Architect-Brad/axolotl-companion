@@ -64,7 +64,6 @@ No core changes, no telemetry, localhost only, every asset MIT. Happy to answer 
 ## Pre-post checklist
 
 - [ ] Push the repo to GitHub under the account you want credited
-- [ ] Replace `Architect-Brad` in the install command and PITCH body
 - [ ] Drag in at least one GIF + the terminal screenshot
 - [ ] Confirm the `opencode plugin add` command works from a clean machine
 - [ ] Post, then stay around for the first hour to answer questions
