@@ -2,6 +2,7 @@
 
 > Goal: **showcase**, not a core feature request. Two prior "built-in mascot" issues
 > (#16557, #26745) were closed as not planned; the plugin system is the supported path.
+> #65746 was closed by a maintainer with the instruction: "A docs PR adding it to the ecosystem page is the way to get it listed." PR #65881 does exactly that.
 
 ## Where to post (recommended order)
 
@@ -9,7 +10,7 @@
 2. **r/opencode** (Reddit) — `[Showcase] I built a pixel axolotl that follows my coding agent`.
 3. **Hacker News** — Show HN: Axolotl Companion — a 15 MB pixel buddy that follows your coding agent.
 4. **OpenCode Discord** — `#showcase` / `#plugins` (check channel rules or ask a mod before self-promo).
-5. Only after there is traction: open/revive a **docs plugin-listing PR** so others can discover it.
+5. **Docs PR — done:** [anomalyco/opencode#65881](https://github.com/anomalyco/opencode/pull/65881) adds Axolotl Companion to the v1 Ecosystem plugin table, as requested by the maintainer on #65746.
 
 Stagger them (Reddit → HN → Discord, a day apart) and cross-link from the repo. Posting all
 three at once looks like spam; each audience wants a different tone (drafts below).
