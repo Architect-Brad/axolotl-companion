@@ -7,8 +7,12 @@
 
 1. **GitHub Discussion** — `anomalyco/opencode` has Discussions disabled, so we opened issue #65746 upstream and seeded our own [Show and tell](https://github.com/Architect-Brad/axolotl-companion/discussions/1) thread.
 2. **r/opencode** (Reddit) — `[Showcase] I built a pixel axolotl that follows my coding agent`.
-3. **Hacker News** — Show HN: Axolotl Companion — a 15 MB pixel companion for OpenCode and Claude Code.
-4. Only after there is traction: open/ revive a **docs plugin-listing PR** so others can discover it.
+3. **Hacker News** — Show HN: Axolotl Companion — a 15 MB pixel buddy that follows your coding agent.
+4. **OpenCode Discord** — `#showcase` / `#plugins` (check channel rules or ask a mod before self-promo).
+5. Only after there is traction: open/revive a **docs plugin-listing PR** so others can discover it.
+
+Stagger them (Reddit → HN → Discord, a day apart) and cross-link from the repo. Posting all
+three at once looks like spam; each audience wants a different tone (drafts below).
 
 Do **not** file another "make this the official mascot" feature request. Same idea was
 closed twice upstream; the pitch is "here is a working plugin, try it".
@@ -47,10 +51,85 @@ No core changes, no telemetry, localhost only, every asset MIT. Happy to answer 
 
 ---
 
-## HN title options
+## Venue-ready drafts
 
-- Show HN: Axolotl Companion – a 15 MB pixel buddy that reacts to your coding agent
-- Show HN: I taught an axolotl to follow Claude Code and OpenCode
+### r/opencode (Reddit)
+
+**Title:** `[Showcase] Axolotl Companion — a pixel axolotl that follows your coding agent`
+
+**Body:**
+
+![Axolotl tool reactions](https://raw.githubusercontent.com/Architect-Brad/axolotl-companion/master/exports/axolotl-tools.gif)
+
+I built a tiny pixel axolotl that reacts to what my agent is doing. It started as a web toy and
+is now an OpenCode v2 plugin package (server part + TUI sidebar sprite + `/pet` panel) and a
+Claude Code hook.
+
+- 34 moods, 38 tool-aware scenes — passing tests get green checks, failures get a snapped
+  hammer and smoke, quiet sessions fall asleep
+- four colour morphs, seasonal outfits, a collection, in-page GIF export
+- the companion page and terminal pane can run in one process: **~15 MB RSS / 1.2% CPU idle**
+- 90+ tests, a real-CLI e2e against OpenCode v2.3.0, GIFs verified by two independent decoders
+
+Install: `opencode plugin add github:Architect-Brad/axolotl-companion`
+
+[Repo](https://github.com/Architect-Brad/axolotl-companion) ·
+[Showcase with every GIF/screenshot](https://github.com/Architect-Brad/axolotl-companion/blob/master/SHOWCASE.md) ·
+[Release v1.2.0](https://github.com/Architect-Brad/axolotl-companion/releases/tag/v1.2.0)
+
+Not official, not affiliated — just a plugin I wanted to exist. MIT, local only, no telemetry.
+Which colour morph should be next? 🦎
+
+---
+
+### Show HN
+
+**Title:** `Show HN: Axolotl Companion – a 15 MB pixel buddy that follows your coding agent`
+
+**Body:**
+
+I built a small pixel companion that watches tool executions and swaps moods: a failing test
+gets a snapped hammer and smoke, a passing test gets green checks, a quiet session naps. It's
+an OpenCode v2 plugin package (server + TUI parts), a Claude Code hook, a local web page and a
+truecolor terminal pane.
+
+A few technical bits I enjoyed building:
+
+- The TUI sprite data is **generated from the terminal renderer**, so the page, pane and
+  sidebar cannot drift apart.
+- The hand-rolled GIF exporter is checked by **two independent decoders** (our own LZW and
+  ffmpeg). That caught a code-width off-by-one that a self-consistent test missed.
+- The suite includes a real-CLI e2e: fake model → OpenCode → plugin → companion.
+- Running the page and pane in one process costs **~15 MB RSS / 1.2% CPU idle**; the plugin
+  itself uses ~5 MB heap and microseconds per event.
+
+[GIF of tool reactions](https://raw.githubusercontent.com/Architect-Brad/axolotl-companion/master/exports/axolotl-tools.gif)
+(HN doesn't inline remote GIFs in submission text.)
+[Repo](https://github.com/Architect-Brad/axolotl-companion) ·
+[Showcase](https://github.com/Architect-Brad/axolotl-companion/blob/master/SHOWCASE.md) ·
+[Release](https://github.com/Architect-Brad/axolotl-companion/releases/tag/v1.2.0)
+
+MIT licensed, localhost only, no telemetry. Not affiliated with OpenCode. Happy to answer
+technical questions.
+
+---
+
+### OpenCode Discord
+
+> Check channel rules / ask a mod before posting in `#showcase` or `#plugins`.
+
+Hey! I built a pixel axolotl that follows what the agent is doing (reading, tests, builds,
+fails, commits, naps) — it's an OpenCode v2 plugin with a sidebar sprite and `/pet` panel.
+
+[GIF](https://raw.githubusercontent.com/Architect-Brad/axolotl-companion/master/exports/axolotl.gif) ·
+[Repo](https://github.com/Architect-Brad/axolotl-companion) ·
+[Showcase](https://github.com/Architect-Brad/axolotl-companion/blob/master/SHOWCASE.md)
+
+`opencode plugin add github:Architect-Brad/axolotl-companion`
+
+Not official, MIT, local only. Happy to hear feedback or see your screenshots! 🦎
+
+---
 
 ## Media to attach
 
@@ -63,10 +142,11 @@ No core changes, no telemetry, localhost only, every asset MIT. Happy to answer 
 
 ## Pre-post checklist
 
-- [ ] Push the repo to GitHub under the account you want credited
-- [ ] Drag in at least one GIF + the terminal screenshot
-- [ ] Confirm the `opencode plugin add` command works from a clean machine
-- [ ] Post, then stay around for the first hour to answer questions
+- [x] Push the repo to GitHub under the account you want credited (`Architect-Brad`)
+- [x] Attach GIFs, MP4s, sprite sheets and terminal screenshots to the release
+- [ ] Confirm `opencode plugin add github:...` works on a normal machine (couldn't verify in this container — OpenCode's service startup needs `lsof`)
+- [ ] Post to r/opencode, then HN a day later, then Discord (if allowed)
+- [ ] Stay around for the first hour after each post to answer questions
 
 ## Why not "official mascot"?
 
