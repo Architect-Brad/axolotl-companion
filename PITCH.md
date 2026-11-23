@@ -5,8 +5,7 @@
 
 ## Where to post (recommended order)
 
-1. **GitHub Discussion** in `anomalyco/opencode` — category *Show and tell* / *Plugins*
-   (if Discussions are enabled; otherwise an issue titled `[SHOWCASE]: ...`).
+1. **GitHub Discussion** — `anomalyco/opencode` has Discussions disabled, so we opened issue #65746 upstream and seeded our own [Show and tell](https://github.com/Architect-Brad/axolotl-companion/discussions/1) thread.
 2. **r/opencode** (Reddit) — `[Showcase] I built a pixel axolotl that follows my coding agent`.
 3. **Hacker News** — Show HN: Axolotl Companion — a 15 MB pixel companion for OpenCode and Claude Code.
 4. Only after there is traction: open/ revive a **docs plugin-listing PR** so others can discover it.

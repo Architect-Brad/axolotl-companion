@@ -5,6 +5,7 @@ A pixel axolotl that follows what your coding agent is doing: thinking, reading,
 ![Axolotl idle and tool animations](exports/axolotl.gif)
 
 **[SHOWCASE.md](SHOWCASE.md) — GIFs, screenshots, sprite sheets, terminal captures and release assets.**
+**[Discussions](https://github.com/Architect-Brad/axolotl-companion/discussions)** — show off your axolotl, ask questions, share ideas.
 
 ![Terminal pane moods](previews/terminal-showcase.png)
 
