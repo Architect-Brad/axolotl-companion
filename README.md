@@ -8,9 +8,10 @@ You need Node 18 or newer. There is nothing to install for normal use.
 
 1. **Start the companion:** `node server.js` and open <http://127.0.0.1:4827>, then press **Live**.
 2. **Connect your agent** (pick one, or `--all` for both):
+   - OpenCode (recommended): `opencode plugin add github:<owner>/axolotl-companion` — installs the package with both its server part (event forwarding) and TUI part (sidebar sprite + `/pet` panel). Or add `"plugins": ["github:<owner>/axolotl-companion"]` to `opencode.jsonc`.
+   - OpenCode (single-file install): `node setup.js install --opencode`
    - Claude Code: `node setup.js install --statusline`
-   - OpenCode: `node setup.js install --opencode`
-   - Add `--project` to install for the current project only, `--dry-run` to preview. Restart the agent afterwards.
+   - Add `--project` to `setup.js` for the current project only, `--dry-run` to preview. Restart the agent afterwards.
 3. **Optional terminal pane:** `node axo-term.js` in a split pane (`--small`, `--color golden|wild|melanoid`, `--demo`). For the smallest footprint, skip the second process entirely: start the server with `node server.js --term` and it hosts the pane itself (one Node runtime: ~15 MB instead of ~25 MB server + ~45 MB pane; ~1.2% CPU instead of ~1.9%). Standalone mode keeps its own pane/terminal and supports all the flags; embedded mode uses the server's port and default colors.
 4. Use your agent normally. `node setup.js status [--opencode]` tells you what is installed and whether the server is running.
 
@@ -25,7 +26,9 @@ Remove everything with `node setup.js uninstall` (add `--opencode` or `--all`). 
 | `mapper.js`, `verbs.json` | The rules that turn tools and commands into scenes, and 177 pond-themed verbs. |
 | `setup.js` | Safe installer for both tools (backup, merge, dry run, status, uninstall). |
 | `hook.js` | The Claude Code hook command. |
-| `opencode/axolotl.js` | The OpenCode plugin (one file). |
+| `opencode/axolotl.js` | The OpenCode server part (one file), also synced to `src/server.ts` for the package. |
+| `src/tui.tsx` | OpenCode TUI part: sidebar sprite + `/pet` panel, generated from `axo-term.js` by `npm run gen:tui`. |
+| `PITCH.md` | Ready-to-post community-plugin pitch (GitHub / Reddit / HN). |
 | `axo-term.js`, `axo-status.js` | Terminal pane and Claude Code status-line face. |
 | `tests/` | 90 checks plus an end-to-end test against the real OpenCode CLI. |
 | `exports/` | GIFs and sprite sheets of the animations. `previews/` has terminal screenshots. |
