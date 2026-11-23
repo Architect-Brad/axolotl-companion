@@ -1,6 +1,12 @@
-# Axolotl companion
+# 🦎 Axolotl companion
 
 A pixel axolotl that follows what your coding agent is doing: thinking, reading, grepping, editing, running tests (and passing or failing them), installing, deleting files, waiting for you. It works with **Claude Code** and **OpenCode**, runs entirely on your machine, and has three faces: a web page, a terminal pane and (Claude Code only) a status-line face.
+
+![Axolotl idle and tool animations](exports/axolotl.gif)
+
+**[SHOWCASE.md](SHOWCASE.md) — GIFs, screenshots, sprite sheets, terminal captures and release assets.**
+
+![Terminal pane moods](previews/terminal-showcase.png)
 
 ## Quick start (about two minutes)
 

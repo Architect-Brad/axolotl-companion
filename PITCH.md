@@ -55,10 +55,11 @@ No core changes, no telemetry, localhost only, every asset MIT. Happy to answer 
 
 ## Media to attach
 
+- [Showcase page](SHOWCASE.md) — all GIFs, screenshots, sprite sheets and terminal captures
 - `exports/axolotl.gif` — GitHub renders GIFs inline
 - `exports/axolotl-tools.gif` — tool reactions
 - `exports/axolotl-side.gif` — side-profile animations
-- `previews/preview-terminal.png` — terminal pane
+- `previews/terminal-showcase.png` — six terminal moods captured from the real ANSI renderer
 - `exports/axolotl-front-sheet.png` — all front moods at a glance
 
 ## Pre-post checklist
