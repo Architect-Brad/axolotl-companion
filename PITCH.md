@@ -38,7 +38,7 @@ Claude Code hook.
   OpenCode CLI with a fake model. Exported GIFs are verified by two independent
   decoders (our own LZW implementation + ffmpeg).
 
-Install: `opencode plugin add github:<owner>/axolotl-companion` (or add the repo to
+Install: `opencode plugin add github:Architect-Brad/axolotl-companion` (or add the repo to
 `plugins` in `opencode.jsonc`), then start `node server.js` and open
 <http://127.0.0.1:4827>.
 
@@ -64,7 +64,7 @@ No core changes, no telemetry, localhost only, every asset MIT. Happy to answer 
 ## Pre-post checklist
 
 - [ ] Push the repo to GitHub under the account you want credited
-- [ ] Replace `<owner>` in the install command and PITCH body
+- [ ] Replace `Architect-Brad` in the install command and PITCH body
 - [ ] Drag in at least one GIF + the terminal screenshot
 - [ ] Confirm the `opencode plugin add` command works from a clean machine
 - [ ] Post, then stay around for the first hour to answer questions

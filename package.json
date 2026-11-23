@@ -1,7 +1,7 @@
 {
   "name": "opencode-axolotl-companion",
   "version": "1.2.0",
-  "description": "A pixel axolotl that follows your coding agent — OpenCode mascot plugin (server + TUI parts)",
+  "description": "A pixel axolotl that follows your coding agent \u2014 OpenCode mascot plugin (server + TUI parts)",
   "license": "MIT",
   "exports": {
     ".": "./src/server.ts",
@@ -22,6 +22,7 @@
     "exports",
     "previews",
     "README.md",
+    "LICENSE",
     "PITCH.md",
     "tools"
   ],
@@ -48,5 +49,13 @@
   },
   "devDependencies": {
     "jsdom": "^31.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Architect-Brad/axolotl-companion.git"
+  },
+  "homepage": "https://github.com/Architect-Brad/axolotl-companion",
+  "bugs": {
+    "url": "https://github.com/Architect-Brad/axolotl-companion/issues"
   }
 }

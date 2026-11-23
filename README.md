@@ -8,7 +8,7 @@ You need Node 18 or newer. There is nothing to install for normal use.
 
 1. **Start the companion:** `node server.js` and open <http://127.0.0.1:4827>, then press **Live**.
 2. **Connect your agent** (pick one, or `--all` for both):
-   - OpenCode (recommended): `opencode plugin add github:<owner>/axolotl-companion` — installs the package with both its server part (event forwarding) and TUI part (sidebar sprite + `/pet` panel). Or add `"plugins": ["github:<owner>/axolotl-companion"]` to `opencode.jsonc`.
+   - OpenCode (recommended): `opencode plugin add github:Architect-Brad/axolotl-companion` — installs the package with both its server part (event forwarding) and TUI part (sidebar sprite + `/pet` panel). Or add `"plugins": ["github:Architect-Brad/axolotl-companion"]` to `opencode.jsonc`.
    - OpenCode (single-file install): `node setup.js install --opencode`
    - Claude Code: `node setup.js install --statusline`
    - Add `--project` to `setup.js` for the current project only, `--dry-run` to preview. Restart the agent afterwards.
