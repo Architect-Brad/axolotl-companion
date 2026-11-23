@@ -1,0 +1,255 @@
+{
+ "thinking": [
+  "Gill-gazing",
+  "Pond-pondering",
+  "Bubble-brewing",
+  "Ripple-reasoning",
+  "Mud-musing",
+  "Lily-pad logic"
+ ],
+ "type": [
+  "Paddle-typing",
+  "Keyboard-puddling",
+  "Gill-tapping",
+  "Splash-coding",
+  "Drip-drafting"
+ ],
+ "stype": [
+  "Side-eye coding",
+  "Tail-typing",
+  "Puddle-patching",
+  "Gill-grafting",
+  "Hunch-hacking"
+ ],
+ "read": [
+  "Reed-reading",
+  "Page-paddling",
+  "Tadpole-skimming",
+  "Footnote-fishing",
+  "Scroll-snorkeling"
+ ],
+ "search": [
+  "Pebble-peeking",
+  "Weed-wading",
+  "Needle-nosing",
+  "Silt-sifting",
+  "Rock-flipping"
+ ],
+ "grep": [
+  "Pattern-prowling",
+  "Regex-rummaging",
+  "Match-munching",
+  "Line-lurking",
+  "Needle-netting"
+ ],
+ "delete": [
+  "Pond-purging",
+  "Bin-bubbling",
+  "Mud-mopping",
+  "Tidy-tossing",
+  "Dunking dead code"
+ ],
+ "save": [
+  "Egg-tucking",
+  "Shell-stashing",
+  "Nest-saving",
+  "Burrow-banking",
+  "Disk-dunking"
+ ],
+ "test": [
+  "Water-testing",
+  "Ripple-checking",
+  "Toe-dipping",
+  "Poke-probing",
+  "Tick-tallying"
+ ],
+ "build": [
+  "Dam-damming",
+  "Reef-raising",
+  "Lily-pad laying",
+  "Coral-constructing",
+  "Brick-bubbling"
+ ],
+ "lint": [
+  "Algae-wiping",
+  "Pond-sweeping",
+  "Fin-flossing",
+  "Scum-skimming",
+  "Silt-sweeping"
+ ],
+ "swim": [
+  "Current-catching",
+  "Net-paddling",
+  "Stream-surfing",
+  "Packet-paddling",
+  "Fetch-floating"
+ ],
+ "wave": [
+  "Fin-waving",
+  "Hello-bubbling",
+  "Greeting-gilling",
+  "Splash-saluting",
+  "Hi-paddling"
+ ],
+ "surprised": [
+  "Gasp-gilling",
+  "Startle-splashing",
+  "Bubble-bursting",
+  "Eek-eddying",
+  "Ripple-recoiling"
+ ],
+ "happy": [
+  "Victory-wiggling",
+  "Gill-glowing",
+  "Joy-jiggling",
+  "Pond-partying",
+  "Tail-twirling"
+ ],
+ "sleepy": [
+  "Mud-napping",
+  "Bubble-dozing",
+  "Silt-snoozing",
+  "Lily-lounging",
+  "Drift-drowsing"
+ ],
+ "idle": [
+  "Puddle-pottering",
+  "Pond-patrolling",
+  "Slow-swimming",
+  "Drift-doodling",
+  "Reed-roaming"
+ ],
+ "dance": [
+  "Gill-grooving",
+  "Fin-flourishing",
+  "Splash-shimmying",
+  "Tail-tangoing",
+  "Wiggle-waltzing"
+ ],
+ "sdance": [
+  "Side-shimmying",
+  "Boogie-bobbing",
+  "Puddle-popping",
+  "Profile-grooving"
+ ],
+ "run": [
+  "Sprint-splashing",
+  "Tail-tearing",
+  "Dash-dripping",
+  "Zoom-paddling",
+  "Gill-galloping"
+ ],
+ "walk": [
+  "Stroll-splashing",
+  "Shore-strutting",
+  "Pond-pacing",
+  "Mud-meandering"
+ ],
+ "sneak": [
+  "Silt-sneaking",
+  "Shadow-slinking",
+  "Quiet-creeping",
+  "Stealth-squelching"
+ ],
+ "hop": [
+  "Lily-hopping",
+  "Boing-bobbing",
+  "Pad-pouncing",
+  "Spring-splashing"
+ ],
+ "jump": [
+  "Leap-lurching",
+  "Splash-springing",
+  "Boing-bounding",
+  "Fin-flinging"
+ ],
+ "coffee": [
+  "Bean-sipping",
+  "Warm-water-waiting",
+  "Mug-musing",
+  "Steam-sighing",
+  "Brew-bubbling"
+ ],
+ "bye": [
+  "Fin-farewelling",
+  "Sunset-signing",
+  "Pond-parting",
+  "Bubble-bidding"
+ ],
+ "love": [
+  "Heart-bubbling",
+  "Daydream-drifting",
+  "Soft-splashing",
+  "Ripple-romancing"
+ ],
+ "seat": [
+  "Berry-bobbing",
+  "Snack-snapping",
+  "Munch-mulling",
+  "Crumb-collecting"
+ ],
+ "eat": [
+  "Berry-munching",
+  "Pond-peckish",
+  "Gulp-gilling",
+  "Crunch-crinkling"
+ ],
+ "moon": [
+  "Moon-gliding",
+  "Backslide-boogieing",
+  "Reverse-rippling",
+  "Smooth-sliding"
+ ],
+ "install": [
+  "Parcel-paddling",
+  "Crate-cracking",
+  "Box-bubbling",
+  "Unwrapping the shallows",
+  "Package-puddling"
+ ],
+ "rename": [
+  "Tag-swapping",
+  "Label-lapping",
+  "Name-nudging",
+  "Sticker-swishing",
+  "Moniker-molting"
+ ],
+ "undo": [
+  "Rewind-rippling",
+  "Time-tide-turning",
+  "Backstroke-bubbling",
+  "Whoops-wading",
+  "Reverse-reefing"
+ ],
+ "fetch": [
+  "Bucket-hauling",
+  "Well-winding",
+  "Rope-reeling",
+  "Water-wrangling",
+  "Pail-pulling"
+ ],
+ "testpass": [
+  "Suspiciously-passing",
+  "Green-gilling",
+  "Too-good-to-be-true-ing",
+  "Victory-puddling"
+ ],
+ "testfail": [
+  "Gill-gasping",
+  "Red-handed-ing",
+  "Pond-panicking",
+  "Blame-bubbling"
+ ],
+ "buildpass": [
+  "Dam-holding",
+  "Reef-gleaming",
+  "Brick-beaming",
+  "Structure-strutting"
+ ],
+ "buildfail": [
+  "Dam-bursting",
+  "Reef-wrecking",
+  "Collapse-crooning",
+  "Rubble-rippling"
+ ]
+}

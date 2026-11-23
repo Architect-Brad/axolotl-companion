@@ -1,0 +1,52 @@
+{
+  "name": "opencode-axolotl-companion",
+  "version": "1.2.0",
+  "description": "A pixel axolotl that follows your coding agent — OpenCode mascot plugin (server + TUI parts)",
+  "license": "MIT",
+  "exports": {
+    ".": "./src/server.ts",
+    "./tui": "./src/tui.tsx"
+  },
+  "files": [
+    "src/server.ts",
+    "src/tui.tsx",
+    "server.js",
+    "axo-term.js",
+    "axo-status.js",
+    "mapper.js",
+    "hook.js",
+    "setup.js",
+    "verbs.json",
+    "index.html",
+    "settings.example.json",
+    "exports",
+    "previews",
+    "README.md",
+    "PITCH.md",
+    "tools"
+  ],
+  "scripts": {
+    "start": "node server.js",
+    "start:term": "node server.js --term",
+    "setup": "node setup.js",
+    "test": "node tests/run.js",
+    "test:opencode": "node tests/opencode-e2e.js",
+    "gen:tui": "node tools/gen_tui.js",
+    "sync:server": "node tools/sync_server.js",
+    "prepack": "node tools/sync_server.js && node tools/gen_tui.js"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "@opencode/plugin": "latest"
+  },
+  "peerDependencies": {
+    "@opentui/core": ">=0.6.6",
+    "@opentui/solid": ">=0.6.6",
+    "solid-js": ">=1.9.0"
+  },
+  "devDependencies": {
+    "jsdom": "^31.0.0"
+  }
+}
