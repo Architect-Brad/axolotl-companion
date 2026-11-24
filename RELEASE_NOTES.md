@@ -1,4 +1,10 @@
-# v1.2.1 — TUI sprite polish 🦎
+# v1.2.2 — sidebar slot fit 🦎
+
+This patch crops the TUI sidebar sprite to a **10×13 bust** (gills, head, eyes, muzzle,
+upper body). The previous 15-row version was being clipped by the sidebar footer on phone
+layouts, hiding the lower half of the character.
+
+## v1.2.1 — TUI sprite polish 🦎
 
 This patch fixes the OpenCode TUI sidebar sprite: per-pixel truecolor spans and distinct
 glyphs (eyes, glints, gills, mouth) replace the old per-row coloring that flattened the face.

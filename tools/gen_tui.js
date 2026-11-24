@@ -29,6 +29,14 @@ for (const mood of moods) {
     if (g[y][x]) { minX = Math.min(minX, x); maxX = Math.max(maxX, x); minY = Math.min(minY, y); maxY = Math.max(maxY, y); }
   }
   if (maxX < 0) { minX = minY = 0; maxX = A.CWd - 1; maxY = A.CHd - 1; }
+  // The sidebar.footer slot is short (Cowd's 11-row sprite fits). Keep a
+  // 10-row bust: gills + head + eyes + muzzle + upper body; drop the legs and
+  // empty padding that were being clipped on narrow/phone layouts.
+  minY = Math.max(minY, 2);
+  maxY = Math.min(maxY, minY + 9);
+  if (maxY - minY < 7) maxY = Math.min(A.CHd - 1, minY + 7);
+  // Props (bin, bucket, sparks) can reach x=16; cap the sidebar bust at 13 cols.
+  if (maxX - minX > 12) maxX = minX + 12;
 
   const frames = [];
   for (const g of grids) {

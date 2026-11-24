@@ -1,6 +1,6 @@
 {
   "name": "opencode-axolotl-companion",
-  "version": "1.2.1",
+  "version": "1.2.2",
   "description": "A pixel axolotl that follows your coding agent \u2014 OpenCode mascot plugin (server + TUI parts)",
   "license": "MIT",
   "exports": {
