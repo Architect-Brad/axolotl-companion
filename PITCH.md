@@ -76,7 +76,7 @@ Install: `opencode plugin add github:Architect-Brad/axolotl-companion`
 
 [Repo](https://github.com/Architect-Brad/axolotl-companion) ·
 [Showcase with every GIF/screenshot](https://github.com/Architect-Brad/axolotl-companion/blob/master/SHOWCASE.md) ·
-[Release v1.2.0](https://github.com/Architect-Brad/axolotl-companion/releases/tag/v1.2.0)
+[Release v1.2.1](https://github.com/Architect-Brad/axolotl-companion/releases/tag/v1.2.1)
 
 Not official, not affiliated — just a plugin I wanted to exist. MIT, local only, no telemetry.
 Which colour morph should be next? 🦎
@@ -108,7 +108,7 @@ A few technical bits I enjoyed building:
 (HN doesn't inline remote GIFs in submission text.)
 [Repo](https://github.com/Architect-Brad/axolotl-companion) ·
 [Showcase](https://github.com/Architect-Brad/axolotl-companion/blob/master/SHOWCASE.md) ·
-[Release](https://github.com/Architect-Brad/axolotl-companion/releases/tag/v1.2.0)
+[Release](https://github.com/Architect-Brad/axolotl-companion/releases/tag/v1.2.1)
 
 MIT licensed, localhost only, no telemetry. Not affiliated with OpenCode. Happy to answer
 technical questions.
