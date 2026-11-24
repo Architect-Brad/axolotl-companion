@@ -1,4 +1,10 @@
-# v1.2.0 — first public release 🦎
+# v1.2.1 — TUI sprite polish 🦎
+
+This patch fixes the OpenCode TUI sidebar sprite: per-pixel truecolor spans and distinct
+glyphs (eyes, glints, gills, mouth) replace the old per-row coloring that flattened the face.
+The canvas is cropped to the visible art (12×15) so it fits narrow sidebars and phones.
+
+## v1.2.0 — first public release 🦎
 
 The axolotl is now a complete OpenCode plugin package: server part, TUI part, terminal pane,
 web companion, and a generated sprite pipeline.

@@ -1,5 +1,6 @@
 'use strict';
 // Generate the TUI part's sprite data from axo-term.js — one source of truth.
+// Each pixel becomes a truecolor span; transparent pixels are spaces.
 const fs = require('fs'), path = require('path');
 const A = require('../axo-term.js');
 
@@ -9,7 +10,6 @@ const GLYPH = {
   tan: '=', dark: '#', glass: '.', clip: ',', cover: 'x', brown: '|',
 };
 const hex = (c) => '#' + c.map((v) => v.toString(16).padStart(2, '0')).join('');
-// exact palette lookup + nearest fallback for a few inline RGB literals
 const palette = Object.entries(A.C).filter(([, v]) => Array.isArray(v));
 const reverse = new Map(palette.map(([k, v]) => [hex(v), k]));
 function nearest(c) {
@@ -22,23 +22,31 @@ function nearest(c) {
 const moods = Object.keys(A.MOODS);
 const AXO = {};
 for (const mood of moods) {
+  const grids = Array.from({ length: 6 }, (_, n) => A.frame(mood, n));
+  // Crop to the union of all frames so animated props don't shift the sprite.
+  let minX = Infinity, maxX = -1, minY = Infinity, maxY = -1;
+  for (const g of grids) for (let y = 0; y < g.length; y++) for (let x = 0; x < g[y].length; x++) {
+    if (g[y][x]) { minX = Math.min(minX, x); maxX = Math.max(maxX, x); minY = Math.min(minY, y); maxY = Math.max(maxY, y); }
+  }
+  if (maxX < 0) { minX = minY = 0; maxX = A.CWd - 1; maxY = A.CHd - 1; }
+
   const frames = [];
-  for (let n = 0; n < 6; n++) {
-    const cv = A.frame(mood, n);
-    const counts = new Map();
-    for (const row of cv) for (const c of row) if (c) { const k = nearest(c); counts.set(k, (counts.get(k) || 0) + 1); }
-    const dominant = [...counts.entries()].sort((a, b) => b[1] - a[1])[0]?.[0] || 'P';
-    const rows = cv.map((row) => row.map((c) => (c ? (GLYPH[nearest(c)] || '█') : ' ')).join('').replace(/\s+$/, ''));
-    const colors = cv.map((row) => hex(row.find(Boolean) || A.C.P));
-    const f = { rows, colors: colors.map((_, i) => hex([...counts.keys()].length && cv[i].find(Boolean) || A.C.P)) };
-    // one fg per row: prefer the dominant sprite color, but keep dark rows dark
-    f.colors = cv.map((row) => {
-      const keys = row.map((c) => c && nearest(c)).filter(Boolean);
-      const dark = keys.filter((k) => ['E', 'M', 'K', 'dark'].includes(k));
-      return hex(A.C[dark.length > keys.length / 3 ? 'E' : dominant] || A.C.P);
-    });
-    if (frames.some((g) => JSON.stringify(g.rows) === JSON.stringify(f.rows))) continue;
-    frames.push(f);
+  for (const g of grids) {
+    const rows = [];
+    for (let y = minY; y <= maxY; y++) {
+      const spans = [];
+      let cur = null, text = '';
+      for (let x = minX; x <= maxX; x++) {
+        const c = g[y][x];
+        const fg = c ? hex(c) : null;
+        if (fg !== cur) { if (cur !== null) spans.push([cur, text]); cur = fg; text = ''; }
+        text += c ? (GLYPH[nearest(c)] || '█') : ' ';
+      }
+      if (cur !== null) spans.push([cur, text]);
+      rows.push(spans);
+    }
+    if (frames.some((f) => JSON.stringify(f.rows) === JSON.stringify(rows))) continue;
+    frames.push({ rows });
   }
   AXO[mood] = frames;
 }
@@ -95,14 +103,17 @@ export default Plugin.define({
       else if (mood() === "idle") setMood("thinking")
     }, TICK)
 
-    const framesFor = (m) => AXO[m] || AXO.idle
     const frame = () => {
-      const fs = framesFor(mood())
+      const fs = AXO[mood()] || AXO.idle
       return fs[tick() % fs.length]
     }
     const sprite = (f) => (
       <box flexDirection="column">
-        {f.rows.map((line, i) => <text fg={f.colors[i]}>{line}</text>)}
+        {f.rows.map((spans) => (
+          <box flexDirection="row">
+            {spans.map((s) => <text fg={s[0] || undefined}>{s[1]}</text>)}
+          </box>
+        ))}
       </box>
     )
 
