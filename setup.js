@@ -24,11 +24,15 @@ const die = (m) => { console.error('\n' + m + '\n'); process.exit(1); };
 // If settings.json is a symlink, write through it (update its target) instead
 // of atomically replacing the link with a regular file.
 function target() {
-  try {
-    if (!fs.lstatSync(settingsPath).isSymbolicLink()) return settingsPath;
-    return fs.realpathSync(settingsPath);
-  } catch (e) {
+  let st;
+  try { st = fs.lstatSync(settingsPath); }
+  catch (e) {
     if (e.code === 'ENOENT') return settingsPath;   // fresh install: nothing to resolve
+    die(`Could not inspect ${settingsPath} (${e.message}).\nNothing was changed.`);
+  }
+  if (!st.isSymbolicLink()) return settingsPath;
+  try { return fs.realpathSync(settingsPath); }
+  catch (e) {
     die(`${settingsPath} is a dangling or unreadable symlink (${e.message}).\nNothing was changed. Fix or remove the link, then run this again.`);
   }
 }

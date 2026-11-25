@@ -13,8 +13,8 @@ const script = [['bash', { command: 'echo hello', description: 'greet' }],
   ['bash', { command: `sh -c 'echo "1 failed"; exit 1' # pytest`, description: 'failing tests' }],
   ['bash', { command: 'echo ok # pytest', description: 'passing tests' }],
   ['bash', { command: 'echo built # npm run build', description: 'build' }],
-  ['read', { filePath: path.join(proj, 'opencode.json') }],
-  ['read', { filePath: path.join(proj, 'missing.txt') }],
+  ['read', { path: path.join(proj, 'opencode.json') }],   // v2 uses `path`
+  ['read', { filePath: path.join(proj, 'missing.txt') }], // wrong key -> real failure
   ['glob', { pattern: '*.json' }]];
 fs.writeFileSync(path.join(proj, 'opencode.json'), JSON.stringify({ $schema: 'https://opencode.ai/config.json', autoupdate: false,
   provider: { mock: { npm: '@ai-sdk/openai-compatible', name: 'Mock', options: { baseURL: `http://127.0.0.1:${MODEL_PORT}/v1`, apiKey: 'x' }, models: { mock: { name: 'Mock', tool_call: true, limit: { context: 32000, output: 4000 } } } } },

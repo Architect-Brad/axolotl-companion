@@ -1,4 +1,14 @@
-# v1.2.3 — five-row sidebar sprite 🦎
+# v1.2.4 — stress-test hardening 🦎
+
+This release fixes everything found by the three parallel stress agents after v1.2.3:
+
+- **TUI alignment**: transparent spans are no longer dropped, so gills, eyes and props keep their exact horizontal positions (this was the real reason the sidebar sprite still looked wrong).
+- **v2 hook leak**: `execute.before` now caps its pending-call map at 200 entries, like the v1 path. A 1M unmatched-before stress previously grew heap by ~104 MB; now bounded.
+- **Dangling symlinks**: the installer now refuses instead of silently replacing the link with a regular file.
+- **SSE backpressure**: broadcasts skip clients whose write buffer is draining, avoiding unbounded memory growth with slow clients.
+- **Test fixture**: the e2e mock now uses `path` for the v2 read tool, so the expected `read > read > surprised` sequence is exact (previously both reads failed, producing a spurious second `surprised`).
+
+## v1.2.3 — five-row sidebar sprite 🦎
 
 The footer slot on phone layouts fits about five text rows, so the 10-row sprite was still
 clipped. This patch samples the essential rows (gills, eyes, glints, mouth, lower body) into

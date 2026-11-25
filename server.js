@@ -15,7 +15,13 @@ const save = () => {
     fs.chmodSync(stateFile, 0o600);   // tighten files created by older versions too
   } catch {}
 };
-const broadcast = (o) => { const s = 'data: ' + JSON.stringify(o) + '\n\n'; for (const r of clients) r.write(s); };
+const broadcast = (o) => {
+  const s = 'data: ' + JSON.stringify(o) + '\n\n';
+  for (const r of clients) {
+    if (r.destroyed || r.writableNeedDrain) continue;   // don't pile up on slow SSE clients
+    r.write(s);
+  }
+};
 const file = (res, name, type) => {
   fs.readFile(path.join(__dirname, name), (e, buf) => {
     if (e) { res.writeHead(404); return res.end(); }

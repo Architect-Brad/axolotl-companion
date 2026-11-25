@@ -3,6 +3,7 @@
 // Each pixel becomes a truecolor span; transparent pixels are spaces.
 const fs = require('fs'), path = require('path');
 const A = require('../axo-term.js');
+const VERSION = require('../package.json').version;
 
 const GLYPH = {
   P: '█', D: '▓', B: '▒', E: '@', W: 'o', M: 'm', T: 't', A: '*', H: '!',
@@ -40,7 +41,7 @@ for (const mood of moods) {
 
   const frames = [];
   for (const g of grids) {
-    // The footer fits ~5 text rows. Sample every other pixel row into 5 rows
+    // The footer fits ~5 text rows. Select five representative pixel rows
     // using the proven fg-only glyph renderer (no new bg prop to risk).
     const rows = [];
     for (const off of [0, 4, 5, 7, 9]) { const y = minY + off;
@@ -49,10 +50,10 @@ for (const mood of moods) {
       for (let x = minX; x <= maxX; x++) {
         const c = g[y][x];
         const fg = c ? hex(c) : null;
-        if (fg !== cur) { if (cur !== null) spans.push([cur, text]); cur = fg; text = ''; }
+        if (fg !== cur) { if (text.length) spans.push([cur, text]); cur = fg; text = ''; }
         text += c ? (GLYPH[nearest(c)] || '█') : ' ';
       }
-      if (cur !== null) spans.push([cur, text]);
+      if (text.length) spans.push([cur, text]);   // keep null (space) spans for alignment
       rows.push(spans);
     }
     if (frames.some((f) => JSON.stringify(f.rows) === JSON.stringify(rows))) continue;
@@ -82,7 +83,7 @@ export default Plugin.define({
     const [tick, setTick] = createSignal(0)
     const [last, setLast] = createSignal(Date.now())
     const [pets, setPets] = createSignal(0)
-    context.ui.toast.show({ title: "Axolotl", message: "v1.2.3 loaded 🦎", variant: "success", duration: 3000 })
+    context.ui.toast.show({ title: "Axolotl", message: "v${VERSION} loaded 🦎", variant: "success", duration: 3000 })
     const timers = new Set()
     const later = (fn, ms) => {
       const t = setTimeout(() => { timers.delete(t); fn() }, ms)

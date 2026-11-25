@@ -108,7 +108,8 @@ export default {
       if (!ctx || !ctx.tool || typeof ctx.tool.hook !== 'function' || !activate()) return
       const calls = new Map()
       await ctx.tool.hook('execute.before', async (e) => {
-        const args = norm(e && e.input); if (e && e.callID) calls.set(e.callID, args)
+        const args = norm(e && e.input)
+        if (e && e.callID) { calls.set(e.callID, args); if (calls.size > 200) calls.delete(calls.keys().next().value) }
         post({ hook_event_name: 'PreToolUse', tool_name: toolName(e && e.tool), tool_input: args })
       })
       await ctx.tool.hook('execute.after', async (e) => {
