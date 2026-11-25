@@ -1,4 +1,11 @@
-# v1.2.2 — sidebar slot fit 🦎
+# v1.2.3 — five-row sidebar sprite 🦎
+
+The footer slot on phone layouts fits about five text rows, so the 10-row sprite was still
+clipped. This patch samples the essential rows (gills, eyes, glints, mouth, lower body) into
+**5 rows × 13 columns**, using the proven fg-only glyph renderer. A load toast shows
+"v1.2.3 loaded" so you can confirm the right build is active.
+
+## v1.2.2 — sidebar slot fit 🦎
 
 This patch crops the TUI sidebar sprite to a **10×13 bust** (gills, head, eyes, muzzle,
 upper body). The previous 15-row version was being clipped by the sidebar footer on phone

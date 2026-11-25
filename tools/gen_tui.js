@@ -40,8 +40,10 @@ for (const mood of moods) {
 
   const frames = [];
   for (const g of grids) {
+    // The footer fits ~5 text rows. Sample every other pixel row into 5 rows
+    // using the proven fg-only glyph renderer (no new bg prop to risk).
     const rows = [];
-    for (let y = minY; y <= maxY; y++) {
+    for (const off of [0, 4, 5, 7, 9]) { const y = minY + off;
       const spans = [];
       let cur = null, text = '';
       for (let x = minX; x <= maxX; x++) {
@@ -80,6 +82,7 @@ export default Plugin.define({
     const [tick, setTick] = createSignal(0)
     const [last, setLast] = createSignal(Date.now())
     const [pets, setPets] = createSignal(0)
+    context.ui.toast.show({ title: "Axolotl", message: "v1.2.3 loaded 🦎", variant: "success", duration: 3000 })
     const timers = new Set()
     const later = (fn, ms) => {
       const t = setTimeout(() => { timers.delete(t); fn() }, ms)
