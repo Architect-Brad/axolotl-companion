@@ -24,6 +24,23 @@ You need Node 18 or newer. There is nothing to install for normal use.
 
 Remove everything with `node setup.js uninstall` (add `--opencode` or `--all`). It only removes what it added.
 
+### Where the OpenCode TUI axolotl lives
+
+By default the TUI part appends the sprite to `sidebar.footer`. It can also live **above the input box** via `session.composer.top`. Configure placements in `cli.json` (TUI plugins read their options from here, not from the server part):
+
+```json
+{
+  "plugins": [
+    {
+      "package": "/root/fun/axolotl-companion",
+      "options": { "placements": ["sidebar.footer", "session.composer.top"] }
+    }
+  ]
+}
+```
+
+Allowed values: `sidebar.footer`, `session.composer.top`. Omitting the option keeps the sidebar-only default. Both slots can be active at once. On narrow terminals the sidebar may auto-hide, so `session.composer.top` is the more reliable place for a always-visible companion.
+
 ## What's in the box
 
 | Path | What it is |
@@ -34,10 +51,12 @@ Remove everything with `node setup.js uninstall` (add `--opencode` or `--all`). 
 | `setup.js` | Safe installer for both tools (backup, merge, dry run, status, uninstall). |
 | `hook.js` | The Claude Code hook command. |
 | `opencode/axolotl.js` | The OpenCode server part (one file), also synced to `src/server.ts` for the package. |
-| `src/tui.tsx` | OpenCode TUI part: sidebar sprite + `/pet` panel, generated from `axo-term.js` by `npm run gen:tui`. |
+| `src/sprites.json` | **Canonical sprite source**: unique RGB frames + 120-phase sequence per mood. Generated from `axo-term.js`. |
+| `src/tui.tsx` | OpenCode TUI part: half-block sprite + `/pet` panel, generated from `src/sprites.json` by `npm run gen:tui`. |
+| `tools/check_generated.js` | Drift guard: regenerates artifacts and verifies the page grid, run by `npm test`. |
 | `PITCH.md` | Ready-to-post community-plugin pitch (GitHub / Reddit / HN). |
 | `axo-term.js`, `axo-status.js` | Terminal pane and Claude Code status-line face. |
-| `tests/` | 90 checks plus an end-to-end test against the real OpenCode CLI. |
+| `tests/` | 90+ checks, generated-artifact drift guard, plus an end-to-end test against the real OpenCode CLI. |
 | `exports/` | GIFs and sprite sheets of the animations. `previews/` has terminal screenshots. |
 
 ## How activity becomes scenes

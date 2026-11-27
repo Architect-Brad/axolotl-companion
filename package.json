@@ -1,6 +1,6 @@
 {
   "name": "opencode-axolotl-companion",
-  "version": "1.2.4",
+  "version": "1.3.0",
   "description": "A pixel axolotl that follows your coding agent \u2014 OpenCode mascot plugin (server + TUI parts)",
   "license": "MIT",
   "exports": {
@@ -10,6 +10,7 @@
   "files": [
     "src/server.ts",
     "src/tui.tsx",
+    "src/sprites.json",
     "server.js",
     "axo-term.js",
     "axo-status.js",
@@ -36,7 +37,10 @@
     "test:opencode": "node tests/opencode-e2e.js",
     "gen:tui": "node tools/gen_tui.js",
     "sync:server": "node tools/sync_server.js",
-    "prepack": "node tools/sync_server.js && node tools/gen_tui.js"
+    "prepack": "npm run gen && npm run check:generated",
+    "gen:sprites": "node tools/gen_sprites.js",
+    "gen": "npm run sync:server && npm run gen:sprites && npm run gen:tui",
+    "check:generated": "node tools/check_generated.js"
   },
   "engines": {
     "node": ">=18"

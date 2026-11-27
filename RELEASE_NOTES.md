@@ -1,65 +1,27 @@
-# v1.2.4 — stress-test hardening 🦎
+# v1.3.0 — canonical sprites, half-block TUI, configurable placement 🦎
 
-This release fixes everything found by the three parallel stress agents after v1.2.3:
-
-- **TUI alignment**: transparent spans are no longer dropped, so gills, eyes and props keep their exact horizontal positions (this was the real reason the sidebar sprite still looked wrong).
-- **v2 hook leak**: `execute.before` now caps its pending-call map at 200 entries, like the v1 path. A 1M unmatched-before stress previously grew heap by ~104 MB; now bounded.
-- **Dangling symlinks**: the installer now refuses instead of silently replacing the link with a regular file.
-- **SSE backpressure**: broadcasts skip clients whose write buffer is draining, avoiding unbounded memory growth with slow clients.
-- **Test fixture**: the e2e mock now uses `path` for the v2 read tool, so the expected `read > read > surprised` sequence is exact (previously both reads failed, producing a spurious second `surprised`).
-
-## v1.2.3 — five-row sidebar sprite 🦎
-
-The footer slot on phone layouts fits about five text rows, so the 10-row sprite was still
-clipped. This patch samples the essential rows (gills, eyes, glints, mouth, lower body) into
-**5 rows × 13 columns**, using the proven fg-only glyph renderer. A load toast shows
-"v1.2.3 loaded" so you can confirm the right build is active.
-
-## v1.2.2 — sidebar slot fit 🦎
-
-This patch crops the TUI sidebar sprite to a **10×13 bust** (gills, head, eyes, muzzle,
-upper body). The previous 15-row version was being clipped by the sidebar footer on phone
-layouts, hiding the lower half of the character.
-
-## v1.2.1 — TUI sprite polish 🦎
-
-This patch fixes the OpenCode TUI sidebar sprite: per-pixel truecolor spans and distinct
-glyphs (eyes, glints, gills, mouth) replace the old per-row coloring that flattened the face.
-The canvas is cropped to the visible art (12×15) so it fits narrow sidebars and phones.
-
-## v1.2.0 — first public release 🦎
-
-The axolotl is now a complete OpenCode plugin package: server part, TUI part, terminal pane,
-web companion, and a generated sprite pipeline.
+This is the architectural rebuild prompted by the deep dissection of the SVG → terminal → TUI pipeline. No more patching symptoms in a lossy downsampler.
 
 ## Highlights
 
-- **OpenCode v2 plugin package** — `opencode plugin add github:Architect-Brad/axolotl-companion`
-  installs both the server part (event forwarding) and TUI part (sidebar sprite + `/pet` panel).
-- **34 moods / 38 agent-aware scenes** with pass/fail reactions, four colour morphs, seasonal
-  outfits, a collection, a story, and in-page GIF export.
-- **Embedded terminal pane** — `node server.js --term` hosts the pane in the server process:
-  ~15 MB RSS / 1.2% CPU idle instead of two Node runtimes (~57–72 MB).
-- **Claude Code support** — safe hook installer with backups, dry-run, status and uninstall.
-- **Generated sprite data** — the TUI part is generated from `axo-term.js`, so the page, terminal
-  pane and sidebar cannot drift apart.
-- **Brutally tested** — 90+ unit tests, a real-CLI e2e against OpenCode v2.3.0, dual-decoder GIF
-  verification, and 232 terminal renders across moods/morphs/modes.
+- **One canonical sprite source** — `src/sprites.json` holds unique RGB frames plus a 120-phase sequence for all 29 moods, generated from `axo-term.js`. The page grid is checked against the same source on every `npm test`, so art can no longer drift silently.
+- **Half-block TUI rendering** — two source pixel rows are packed into one terminal row using `▀`/`▄` with per-cell `fg`/`bg`. The sprite keeps its aspect ratio, uses **consecutive** rows (no more floating gills), and renders as one fixed-geometry `<text width={13} height={5} wrapMode="none" flexShrink={0}>` instead of dozens of shrinkable nodes.
+- **Correct animation timing** — the TUI uses the canonical 120-phase sequence, so gill bob, eye blink and prop animations keep their original timing.
+- **Configurable placement** — the TUI sprite can live in `sidebar.footer` (default), `session.composer.top` (above the input), or both. Configure with `options.placements` in `cli.json`. `/pet` now opens from a keymap command without a global `p` binding that could fire while typing.
+- **Drift guard in tests** — `npm test` regenerates `sprites.json` and `tui.tsx` into a temp dir and fails if either committed artifact is stale, and asserts every TUI frame is 13×5 with 120 phases.
+
+## Upgrade notes
+
+- No changes to the server part, page, or GIF/MP4 assets.
+- TUI placement options are read from `cli.json`, not `opencode.jsonc`.
+- If you had custom plugin options in `opencode.jsonc`, they still feed the server part as before.
 
 ## Install
 
 ```sh
 opencode plugin add github:Architect-Brad/axolotl-companion
-node server.js --term      # optional: companion page + terminal pane in one process
 ```
 
-Open http://127.0.0.1:4827 and press **Live**.
-
-## Media
-
-- [Showcase page](https://github.com/Architect-Brad/axolotl-companion/blob/master/SHOWCASE.md)
-- GIFs: `axolotl.gif`, `axolotl-tools.gif`, `axolotl-side.gif`
-- MP4s: `axolotl.mp4`, `axolotl-tools.mp4`, `axolotl-side.mp4`
-- Sprite sheets and terminal screenshots in `exports/` and `previews/`
+See [SHOWCASE.md](SHOWCASE.md) for GIFs, screenshots and sprite sheets.
 
 MIT licensed. Local only. No telemetry. 🦎

@@ -1,80 +1,64 @@
 'use strict';
-// Generate the TUI part's sprite data from axo-term.js — one source of truth.
-// Each pixel becomes a truecolor span; transparent pixels are spaces.
+// Generate the TUI part from canonical src/sprites.json — one source of truth.
+// Two source pixel rows are packed into each terminal row using ▀/▄ with
+// per-cell fg+bg, so the sprite keeps its aspect ratio in a 5-row footer.
 const fs = require('fs'), path = require('path');
-const A = require('../axo-term.js');
+const SPRITES = require('../src/sprites.json');
 const VERSION = require('../package.json').version;
 
-const GLYPH = {
-  P: '█', D: '▓', B: '▒', E: '@', W: 'o', M: 'm', T: 't', A: '*', H: '!',
-  G: '=', K: '#', k: ':', paper: ' ', green: '+', blue: '~', wood: '|',
-  tan: '=', dark: '#', glass: '.', clip: ',', cover: 'x', brown: '|',
-};
-const hex = (c) => '#' + c.map((v) => v.toString(16).padStart(2, '0')).join('');
-const palette = Object.entries(A.C).filter(([, v]) => Array.isArray(v));
-const reverse = new Map(palette.map(([k, v]) => [hex(v), k]));
-function nearest(c) {
-  const h = hex(c); if (reverse.has(h)) return reverse.get(h);
-  let best = 'P', bd = Infinity;
-  for (const [k, v] of palette) { const d = (v[0]-c[0])**2 + (v[1]-c[1])**2 + (v[2]-c[2])**2; if (d < bd) { bd = d; best = k; } }
-  return best;
-}
-
-const moods = Object.keys(A.MOODS);
+const W = 13, LINES = 5;
 const AXO = {};
-for (const mood of moods) {
-  const grids = Array.from({ length: 6 }, (_, n) => A.frame(mood, n));
-  // Crop to the union of all frames so animated props don't shift the sprite.
-  let minX = Infinity, maxX = -1, minY = Infinity, maxY = -1;
-  for (const g of grids) for (let y = 0; y < g.length; y++) for (let x = 0; x < g[y].length; x++) {
-    if (g[y][x]) { minX = Math.min(minX, x); maxX = Math.max(maxX, x); minY = Math.min(minY, y); maxY = Math.max(maxY, y); }
-  }
-  if (maxX < 0) { minX = minY = 0; maxX = A.CWd - 1; maxY = A.CHd - 1; }
-  // The sidebar.footer slot is short (Cowd's 11-row sprite fits). Keep a
-  // 10-row bust: gills + head + eyes + muzzle + upper body; drop the legs and
-  // empty padding that were being clipped on narrow/phone layouts.
-  minY = Math.max(minY, 2);
-  maxY = Math.min(maxY, minY + 9);
-  if (maxY - minY < 7) maxY = Math.min(A.CHd - 1, minY + 7);
-  // Props (bin, bucket, sparks) can reach x=16; cap the sidebar bust at 13 cols.
-  if (maxX - minX > 12) maxX = minX + 12;
 
-  const frames = [];
-  for (const g of grids) {
-    // The footer fits ~5 text rows. Select five representative pixel rows
-    // using the proven fg-only glyph renderer (no new bg prop to risk).
-    const rows = [];
-    for (const off of [0, 4, 5, 7, 9]) { const y = minY + off;
+for (const [name, data] of Object.entries(SPRITES.moods)) {
+  // Union crop across every unique frame so props can't shift the sprite.
+  let minX = Infinity, maxX = -1, minY = Infinity, maxY = -1;
+  for (const grid of data.frames) for (let y = 0; y < grid.length; y++) for (let x = 0; x < grid[y].length; x++) {
+    if (grid[y][x]) { minX = Math.min(minX, x); maxX = Math.max(maxX, x); minY = Math.min(minY, y); maxY = Math.max(maxY, y); }
+  }
+  if (maxX < 0) { minX = minY = 0; maxX = W - 1; maxY = 9; }
+  minY = Math.max(minY, 2);
+  maxY = Math.min(maxY, minY + 9);                 // 10 source rows -> 5 output lines
+  if (maxY - minY < 9) maxY = minY + 9;
+  if (maxX - minX > W - 1) maxX = minX + W - 1;
+
+  const frames = [], index = new Map(), sequence = [];
+  for (const sourceId of data.sequence) {
+    const grid = data.frames[sourceId];
+    const lines = [];
+    for (let y = minY; y <= maxY; y += 2) {
       const spans = [];
       let cur = null, text = '';
       for (let x = minX; x <= maxX; x++) {
-        const c = g[y][x];
-        const fg = c ? hex(c) : null;
-        if (fg !== cur) { if (text.length) spans.push([cur, text]); cur = fg; text = ''; }
-        text += c ? (GLYPH[nearest(c)] || '█') : ' ';
+        const top = grid[y][x], bot = grid[y + 1] ? grid[y + 1][x] : null;
+        let ch, fg, bg;
+        if (top && bot) { ch = '▀'; fg = top; bg = bot; }
+        else if (top) { ch = '▀'; fg = top; bg = null; }
+        else if (bot) { ch = '▄'; fg = bot; bg = null; }
+        else { ch = ' '; fg = null; bg = null; }
+        const key = JSON.stringify([fg, bg, ch]);
+        if (key !== cur) { if (text.length) { const [f, b] = JSON.parse(cur); spans.push([f, b, text]); } cur = key; text = ''; }
+        text += ch;
       }
-      if (text.length) spans.push([cur, text]);   // keep null (space) spans for alignment
-      rows.push(spans);
+      if (text.length) { const [f, b] = JSON.parse(cur); spans.push([f, b, text]); }
+      lines.push(spans);
     }
-    if (frames.some((f) => JSON.stringify(f.rows) === JSON.stringify(rows))) continue;
-    frames.push({ rows });
+    const key = JSON.stringify(lines);
+    let id = index.get(key);
+    if (id === undefined) { id = frames.length; index.set(key, id); frames.push({ lines }); }
+    sequence.push(id);
   }
-  AXO[mood] = frames;
+  AXO[name] = { w: W, rows: LINES, frames, sequence };
 }
-
-const data = JSON.stringify(AXO);
-const header = `// GENERATED by tools/gen_tui.js — do not edit. Source: axo-term.js
-const AXO = ${data};
-`;
 
 const body = `
 import { Plugin } from "@opencode/plugin/tui"
-import { createSignal, Show } from "solid-js"
+import { createSignal, Show, For } from "solid-js"
 
 const TICK = 250
 const QUIET_IDLE = 8_000
 const SLEEP_AFTER = 60_000
 const BUSY = new Set(["happy", "surprised", "testpass", "testfail", "buildpass", "buildfail"])
+const SLOTS = new Set(["sidebar.footer", "session.composer.top"])
 
 export default Plugin.define({
   id: "axolotl.tui",
@@ -84,6 +68,7 @@ export default Plugin.define({
     const [last, setLast] = createSignal(Date.now())
     const [pets, setPets] = createSignal(0)
     context.ui.toast.show({ title: "Axolotl", message: "v${VERSION} loaded 🦎", variant: "success", duration: 3000 })
+
     const timers = new Set()
     const later = (fn, ms) => {
       const t = setTimeout(() => { timers.delete(t); fn() }, ms)
@@ -94,7 +79,6 @@ export default Plugin.define({
       if (hold) later(() => setMood("idle"), hold)
     }
 
-    // Server events v2: execution.succeeded/failed, tool.*, session.*
     const stopEvents = context.data.listen(({ details }) => {
       const t = String(details?.type ?? "")
       if (t.includes("execution.succeeded")) return react("happy", 4000)
@@ -116,31 +100,39 @@ export default Plugin.define({
     }, TICK)
 
     const frame = () => {
-      const fs = AXO[mood()] || AXO.idle
-      return fs[tick() % fs.length]
+      const m = AXO[mood()] || AXO.idle
+      return m.frames[m.sequence[tick() % m.sequence.length] || 0]
     }
-    const sprite = (f) => (
-      <box flexDirection="column">
-        {f.rows.map((spans) => (
-          <box flexDirection="row">
-            {spans.map((s) => <text fg={s[0] || undefined}>{s[1]}</text>)}
-          </box>
-        ))}
-      </box>
-    )
+    const Sprite = () => {
+      const f = frame()
+      return (
+        <text width={f.w} height={f.rows} wrapMode="none" flexShrink={0} selectable={false}>
+          <For each={f.lines}>{(line, i) => (
+            <>
+              <For each={line}>{([fg, bg, s]) => (
+                <span fg={fg ?? undefined} bg={bg ?? undefined}>{s}</span>
+              )}</For>
+              {i() < f.lines.length - 1 ? "\\n" : ""}
+            </>
+          )}</For>
+        </text>
+      )
+    }
 
-    context.ui.slot({
-      append: "sidebar.footer",
-      render: () => sprite(frame()),
-    })
+    // Configure in cli.json: { "plugins": [{ "package": "...", "options": { "placements": ["sidebar.footer", "session.composer.top"] } }] }
+    const raw = context.options?.placements
+    const wanted = new Set(Array.isArray(raw) ? raw : typeof raw === "string" ? [raw] : ["sidebar.footer"])
+    const disposers = []
+    for (const slot of wanted) {
+      if (!SLOTS.has(slot)) continue
+      disposers.push(context.ui.slot({ append: slot, render: () => <Sprite /> }))
+    }
 
     const Axo = () => {
       context.keymap.layer(() => ({
-        mode: "global",
         commands: [{
           id: "axolotl.pet.press",
           title: "Pet Axolotl",
-          bind: "p",
           run: () => {
             setPets((p) => p + 1); react("happy", 1200)
             context.ui.toast.show({ message: "gill-giggles 🦎", variant: "success", duration: 1500 })
@@ -149,17 +141,17 @@ export default Plugin.define({
       }))
       return (
         <box flexDirection="column" paddingLeft={2} paddingTop={1}>
-          <text fg="#f4a6b8">AXOLOTL — press p to pet</text>
-          {sprite(frame())}
+          <text fg="#f4a6b8">AXOLOTL — press Enter to pet</text>
+          <Sprite />
           <text fg="#9a938a">pets: {pets()}</text>
         </box>
       )
     }
-    context.ui.slot({
+    disposers.push(context.ui.slot({
       append: "session.panel",
       render: (panel) => <Show when={panel.name === "axolotl.pet"}><Axo /></Show>,
-    })
-    context.ui.slot({
+    }))
+    disposers.push(context.ui.slot({
       append: "app",
       render: () => {
         context.keymap.layer(() => ({
@@ -174,17 +166,19 @@ export default Plugin.define({
         }))
         return null
       },
-    })
+    }))
 
     return () => {
       stopEvents(); clearInterval(stopClock)
       for (const t of timers) clearTimeout(t)
+      for (const dispose of disposers) dispose()
     }
   },
 })
 `;
 
-const out = path.join(__dirname, '..', 'src', 'tui.tsx');
+const out = process.argv[2] || path.join(__dirname, '..', 'src', 'tui.tsx');
 fs.mkdirSync(path.dirname(out), { recursive: true });
-fs.writeFileSync(out, header + body);
-console.log(`wrote ${out} (${(fs.statSync(out).size / 1024).toFixed(1)} KB, ${Object.keys(AXO).length} moods)`);
+fs.writeFileSync(out, `// GENERATED by tools/gen_tui.js from src/sprites.json — do not edit.\nconst AXO = ${JSON.stringify(AXO)};\n${body}`);
+const count = Object.values(AXO).reduce((n, m) => n + m.frames.length, 0);
+console.log(`wrote ${out} (${(fs.statSync(out).size / 1024).toFixed(1)} KB, ${Object.keys(AXO).length} moods, ${count} unique TUI frames)`);
